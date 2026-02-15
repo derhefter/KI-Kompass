@@ -68,6 +68,8 @@ export default function PremiumAssessment() {
         setContactEmail(data.email || '')
         setCompanyName(data.company || '')
         setCustomerPlan(data.plan || 'premium')
+      } else if (data.expired) {
+        setLoginError('Ihr Zugangscode ist abgelaufen. Bitte kontaktieren Sie uns f\u00fcr eine Verl\u00e4ngerung: steffenhefter@googlemail.com')
       } else {
         setLoginError('Ung\u00fcltiger Zugangscode. Bitte pr\u00fcfen Sie Ihren Link.')
       }
@@ -162,7 +164,7 @@ export default function PremiumAssessment() {
               </div>
               <h1 className="text-2xl font-bold text-gray-900 mb-2">Premium KI-Readiness Assessment</h1>
               <p className="text-gray-600">
-                35 Detailfragen f&uuml;r eine umfassende Analyse Ihres Unternehmens.
+                30 Detailfragen f&uuml;r eine umfassende Analyse Ihres Unternehmens.
                 Ihr Ergebnis: Ein individueller PDF-Report mit Roadmap und Handlungsempfehlungen.
               </p>
             </div>

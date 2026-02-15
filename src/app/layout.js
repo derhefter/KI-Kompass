@@ -26,12 +26,8 @@ export default function RootLayout({ children }) {
         <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
-              <a href="/" className="flex items-center space-x-2">
-                <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                  </svg>
-                </div>
+              <a href="/" className="flex items-center space-x-3">
+                <img src="/frimalo logo.png" alt="frimalo" className="h-10 w-auto" />
                 <span className="text-xl font-bold text-gray-900">KI-Kompass</span>
               </a>
               <div className="hidden md:flex items-center space-x-8">
@@ -50,12 +46,8 @@ export default function RootLayout({ children }) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-3 gap-8">
               <div>
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                    </svg>
-                  </div>
+                <div className="flex items-center space-x-3 mb-4">
+                  <img src="/frimalo logo.png" alt="frimalo" className="h-8 w-auto brightness-0 invert" />
                   <span className="text-lg font-bold text-white">KI-Kompass</span>
                 </div>
                 <p className="text-sm">Der KI-Readiness Check f&uuml;r den deutschen Mittelstand. Ein Angebot der frimalo &ndash; Steffen Hefter, KI-Berater f&uuml;r KMU in Mitteldeutschland.</p>

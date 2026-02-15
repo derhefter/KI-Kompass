@@ -41,6 +41,9 @@ export default function Anfrage() {
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
+  const [invoiceRequested, setInvoiceRequested] = useState(false)
+  const [invoiceSending, setInvoiceSending] = useState(false)
+  const [invoiceError, setInvoiceError] = useState('')
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -83,6 +86,27 @@ export default function Anfrage() {
       setError('Verbindungsfehler. Bitte versuchen Sie es erneut.')
     }
     setSending(false)
+  }
+
+  async function handleInvoiceRequest() {
+    setInvoiceError('')
+    setInvoiceSending(true)
+    try {
+      const res = await fetch('/api/invoice-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan, name, email, company }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setInvoiceRequested(true)
+      } else {
+        setInvoiceError('Es gab einen Fehler. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt an steffenhefter@googlemail.com.')
+      }
+    } catch {
+      setInvoiceError('Verbindungsfehler. Bitte versuchen Sie es erneut.')
+    }
+    setInvoiceSending(false)
   }
 
   const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL || ''
@@ -139,10 +163,60 @@ export default function Anfrage() {
               <div className="relative flex justify-center"><span className="bg-white px-4 text-sm text-gray-400">oder</span></div>
             </div>
 
-            <p className="text-sm text-gray-500 mb-6">
-              Alternativ erhalten Sie innerhalb von 24 Stunden eine Rechnung per E-Mail
-              zur &Uuml;berweisung an <strong>{email}</strong>.
-            </p>
+            {/* Rechnung anfordern */}
+            {!invoiceRequested ? (
+              <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-6 mb-6">
+                <div className="flex items-center justify-center gap-3 mb-3">
+                  <svg className="w-7 h-7 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <h3 className="font-bold text-gray-900 text-lg">Lieber per Rechnung zahlen?</h3>
+                </div>
+                <p className="text-gray-600 text-sm mb-4 text-center">
+                  Fordern Sie eine Rechnung an. Ihr Zugang wird innerhalb von 12 Stunden freigeschaltet.
+                  Die Rechnung erhalten Sie per E-Mail an <strong>{email}</strong>.
+                </p>
+                {invoiceError && (
+                  <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                    {invoiceError}
+                  </div>
+                )}
+                <button
+                  onClick={handleInvoiceRequest}
+                  disabled={invoiceSending}
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-lg font-semibold text-white bg-amber-600 rounded-xl hover:bg-amber-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {invoiceSending ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Wird angefordert...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Rechnung anfordern
+                    </>
+                  )}
+                </button>
+                <p className="text-xs text-gray-500 mt-3 text-center">
+                  Zahlung per &Uuml;berweisung &ndash; Rechnung wird an {email} gesendet
+                </p>
+              </div>
+            ) : (
+              <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 mb-6 text-center">
+                <svg className="w-12 h-12 text-green-500 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 className="font-bold text-gray-900 text-lg mb-2">Rechnung angefordert!</h3>
+                <p className="text-gray-600 text-sm">
+                  Ihre Rechnungsanforderung wurde erfolgreich &uuml;bermittelt. Sie erhalten in K&uuml;rze eine
+                  Rechnung per E-Mail an <strong>{email}</strong>.
+                  Ihr Zugang wird <strong>innerhalb von 12 Stunden</strong> freigeschaltet.
+                </p>
+              </div>
+            )}
 
             {/* Terminbuchung direkt im Flow f&uuml;r Strategie-Paket */}
             {plan === 'strategie' && bookingUrl && (

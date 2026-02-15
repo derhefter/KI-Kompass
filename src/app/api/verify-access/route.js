@@ -1,8 +1,20 @@
 import { NextResponse } from 'next/server'
 import { customers } from '../../../data/customers'
 import { rateLimit } from '../../../lib/rate-limit'
+import crypto from 'crypto'
 
-const limiter = rateLimit({ maxRequests: 10, windowMs: 60 * 1000 })
+const limiter = rateLimit({ maxRequests: 5, windowMs: 60 * 1000 })
+
+function constantTimeEqual(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string') return false
+  const bufA = Buffer.from(a)
+  const bufB = Buffer.from(b)
+  if (bufA.length !== bufB.length) {
+    crypto.timingSafeEqual(bufA, bufA)
+    return false
+  }
+  return crypto.timingSafeEqual(bufA, bufB)
+}
 
 export async function POST(request) {
   try {
@@ -13,24 +25,41 @@ export async function POST(request) {
 
     const { code } = await request.json()
 
-    if (!code || typeof code !== 'string') {
+    if (!code || typeof code !== 'string' || code.length > 100) {
       return NextResponse.json({ valid: false }, { status: 400 })
     }
 
-    const customer = customers.find(
-      (c) => c.code === code.trim()
-    )
+    const trimmedCode = code.trim()
+    let matchedCustomer = null
 
-    if (!customer) {
+    for (const customer of customers) {
+      if (constantTimeEqual(customer.code, trimmedCode)) {
+        matchedCustomer = customer
+      }
+    }
+
+    if (!matchedCustomer) {
       return NextResponse.json({ valid: false })
+    }
+
+    // Ablaufdatum prüfen
+    if (matchedCustomer.expiresAt) {
+      const expiryDate = new Date(matchedCustomer.expiresAt)
+      if (expiryDate < new Date()) {
+        return NextResponse.json({
+          valid: false,
+          expired: true,
+          message: 'Ihr Zugangscode ist abgelaufen. Bitte kontaktieren Sie uns für eine Verlängerung: steffenhefter@googlemail.com',
+        })
+      }
     }
 
     return NextResponse.json({
       valid: true,
-      name: customer.name,
-      email: customer.email,
-      company: customer.company,
-      plan: customer.plan,
+      name: matchedCustomer.name,
+      email: matchedCustomer.email,
+      company: matchedCustomer.company,
+      plan: matchedCustomer.plan,
     })
   } catch {
     return NextResponse.json({ valid: false }, { status: 500 })

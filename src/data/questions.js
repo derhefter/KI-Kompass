@@ -81,7 +81,7 @@ export const freeQuestions = [
     id: 7,
     category: 'readiness',
     categoryLabel: 'KI-Bereitschaft',
-    question: 'Haben Sie repetitive Prozesse identifiziert, die automatisiert werden k\u00f6nnten?',
+    question: 'Haben Sie repetitive (sich wiederholende) Prozesse identifiziert, die automatisiert werden k\u00f6nnten?',
     options: [
       { text: 'Wir haben uns damit noch nicht besch\u00e4ftigt', score: 1 },
       { text: 'Wir vermuten Potenzial, haben aber nichts konkret analysiert', score: 2 },
@@ -107,12 +107,12 @@ export const freeQuestions = [
     id: 9,
     category: 'steadiness',
     categoryLabel: 'KI-Nachhaltigkeit',
-    question: 'Gibt es in Ihrem Unternehmen bereits Erfahrung mit Digitalprojekten?',
+    question: 'Gibt es in Ihrem Unternehmen bereits Erfahrung mit Digitalisierungsprojekten?',
     options: [
-      { text: 'Kaum Erfahrung mit gr\u00f6\u00dferen Digitalprojekten', score: 1 },
+      { text: 'Kaum Erfahrung mit gr\u00f6\u00dferen Digitalisierungsprojekten', score: 1 },
       { text: 'Einzelne Projekte, aber ohne klare Methodik', score: 2 },
-      { text: 'Mehrere erfolgreiche Digitalprojekte durchgef\u00fchrt', score: 3 },
-      { text: 'Systematisches Projektmanagement f\u00fcr Digitalprojekte', score: 4 },
+      { text: 'Mehrere erfolgreiche Digitalisierungsprojekte durchgef\u00fchrt', score: 3 },
+      { text: 'Systematisches Projektmanagement f\u00fcr Digitalisierungsprojekte', score: 4 },
     ],
   },
   {
@@ -153,7 +153,7 @@ export const freeQuestions = [
   },
 ]
 
-// Premium-Assessment: 35 Detailfragen (zus\u00e4tzlich)
+// Premium-Assessment: 30 Detailfragen (zus\u00e4tzlich)
 export const premiumQuestions = [
   // === STRATEGIE & VISION ===
   {
@@ -320,7 +320,7 @@ export const premiumQuestions = [
     id: 304,
     category: 'prozesse',
     categoryLabel: 'Prozesse & Automatisierung',
-    question: 'Wie viel Zeit verbringen Mitarbeitende mit repetitiven Aufgaben?',
+    question: 'Wie viel Zeit verbringen Mitarbeitende mit repetitiven (sich wiederholenden) Aufgaben?',
     options: [
       { text: 'Das haben wir nie gemessen', score: 1 },
       { text: 'Gesch\u00e4tzt weniger als 20% der Arbeitszeit', score: 2 },

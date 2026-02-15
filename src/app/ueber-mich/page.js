@@ -27,7 +27,7 @@ export default function UeberMich() {
               <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Steffen Hefter</h1>
               <p className="text-xl text-primary-100 leading-relaxed max-w-2xl">
                 Gesch&auml;ftsf&uuml;hrer der frimalo &ndash; &uuml;ber 20 Jahre Erfahrung in F&uuml;hrung,
-                Kundenservice, Vertrieb und Digitalisierung. Ich helfe kleinen und mittleren
+                Kundenservice, Vertrieb und Digitalisierung. Ich unterstütze kleine und mittlere
                 Unternehmen in Mitteldeutschland, K&uuml;nstliche Intelligenz pragmatisch und
                 gewinnbringend einzusetzen.
               </p>
@@ -95,8 +95,8 @@ export default function UeberMich() {
                   <p className="text-gray-600">
                     Als Diplom-Sozialp&auml;dagoge habe ich gelernt, Menschen zu verstehen, zuzuh&ouml;ren und
                     Ver&auml;nderungsprozesse empathisch zu begleiten. Diese F&auml;higkeit ist in der
-                    KI-Transformation Gold wert &ndash; denn Technologie funktioniert nur, wenn die
-                    Menschen dahinter mitgenommen werden.
+                    KI-Transformation wichtig &ndash; denn Technologie funktioniert nur, wenn die
+                    Menschen dahinter mitgenommen werden. Es ist kein IT-Projekt.
                   </p>
                 </div>
               </div>
@@ -130,9 +130,9 @@ export default function UeberMich() {
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Branchen&uuml;bergreifend denken</h3>
                   <p className="text-gray-600">
-                    Von der Softwarebranche &uuml;ber die Energiewirtschaft bis hin zu Telekommunikation,
-                    Automotive, Finanzen und Sozialwirtschaft &ndash; in jeder Branche habe ich wertvolle
-                    Erfahrungen gesammelt. Dieses breite Wissen hilft mir, L&ouml;sungen aus einer Branche
+                    Von der Softwarebranche &uuml;ber die Energiewirtschaft bis hin zu Telekommunikation, Software,
+                    Finanzen und Sozialwirtschaft &ndash; in jeder Branche konnte ich wertvolle
+                    Erfahrungen sammeln. Dieses Wissen hilft mir, L&ouml;sungen aus einer Branche
                     auf eine andere zu &uuml;bertragen.
                   </p>
                 </div>
@@ -166,7 +166,6 @@ export default function UeberMich() {
               nur durch die Technik-Brille &ndash; sondern verstehe die Menschen, die Prozesse
               und die Gesch&auml;ftslogik dahinter.&ldquo;
             </p>
-            <p className="text-primary-600 font-semibold mt-4">&ndash; Steffen Hefter</p>
           </div>
         </div>
       </section>

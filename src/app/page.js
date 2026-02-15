@@ -4,56 +4,63 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-white to-accent-50">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyNTYzZWIiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="/top-view-of-road-intersection-Z6NJKXA.jpg"
+            alt=""
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-900/80 via-primary-800/70 to-accent-900/60" />
+        </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 relative">
           <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium mb-6 fade-in-up">
+            <div className="inline-flex items-center px-4 py-2 bg-white/20 text-white rounded-full text-sm font-medium mb-6 fade-in-up backdrop-blur-sm">
               <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              Kostenlos &bull; 5 Minuten &bull; Sofort Ergebnis
+              Kostenfrei &bull; 5 Minuten &bull; Sofort Ergebnis
             </div>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight fade-in-up fade-in-up-delay-1">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight fade-in-up fade-in-up-delay-1 drop-shadow-lg">
               Wie bereit ist Ihr Unternehmen f&uuml;r{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 to-accent-100">
                 K&uuml;nstliche Intelligenz?
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-10 leading-relaxed fade-in-up fade-in-up-delay-2">
+            <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed fade-in-up fade-in-up-delay-2">
               Finden Sie in 5 Minuten heraus, wo Ihr Unternehmen steht &ndash;
               und welche konkreten Schritte Sie jetzt unternehmen sollten, um KI
               erfolgreich einzusetzen.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center fade-in-up fade-in-up-delay-3">
-              <a href="/assessment" className="btn-primary text-lg">
-                Kostenlosen Check starten
+              <a href="/assessment" className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-primary-700 bg-white rounded-xl hover:bg-primary-50 transition-all duration-200 shadow-xl hover:shadow-2xl hover:-translate-y-0.5">
+                Kostenfreien Check starten
                 <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </a>
-              <a href="#ablauf" className="btn-secondary text-lg">
+              <a href="#ablauf" className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-white/40 rounded-xl hover:bg-white/10 transition-all backdrop-blur-sm">
                 Mehr erfahren
               </a>
             </div>
-            <div className="mt-10 flex flex-wrap justify-center gap-8 text-sm text-gray-500 fade-in-up fade-in-up-delay-4">
+            <div className="mt-10 flex flex-wrap justify-center gap-8 text-sm text-white/80 fade-in-up fade-in-up-delay-4">
               <div className="flex items-center">
-                <svg className="w-5 h-5 text-accent-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-accent-300 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                Wissenschaftlich fundiert
+                Praxisorientiert
               </div>
               <div className="flex items-center">
-                <svg className="w-5 h-5 text-accent-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-accent-300 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
                 DSGVO-konform
               </div>
               <div className="flex items-center">
-                <svg className="w-5 h-5 text-accent-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-accent-300 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                &Uuml;ber 200 KMU getestet
+                von &uuml;ber 50 KMU getestet
               </div>
             </div>
           </div>
@@ -66,7 +73,7 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="section-title">Die KI-Herausforderung f&uuml;r den Mittelstand</h2>
             <p className="section-subtitle mt-4">
-              73% der Erwerbst&auml;tigen kennen keine KI-Lernangebote. Viele KMU wissen nicht, wo sie anfangen sollen.
+              73% der Erwerbst&auml;tigen kennen keine KI-Lernangebote. Ebenso viele KMU wissen nicht, wo sie anfangen sollen.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -87,7 +94,7 @@ export default function Home() {
                   </svg>
                 ),
                 title: 'Kostenunsicherheit',
-                desc: 'Was kostet eine KI-Implementierung wirklich? Welche F&ouml;rdermittel gibt es? Lohnt sich die Investition?',
+                desc: 'Was kostet eine KI-Implementierung wirklich? Welche Foerdermittel gibt es? Lohnt sich die Investition wirklich?',
               },
               {
                 icon: (
@@ -95,7 +102,7 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
                 ),
-                title: 'Kompetenzl&uuml;cken',
+                title: 'Kompetenzluecken',
                 desc: 'Mitarbeiter sind unsicher im Umgang mit KI. Es fehlt an Schulungen, Richtlinien und einer klaren Strategie.',
               },
             ].map((item, i) => (
@@ -131,7 +138,7 @@ export default function Home() {
               {
                 num: '02',
                 title: 'Potenziale identifizieren',
-                desc: 'Entdecken Sie die konkreten KI-Anwendungsf\u00e4lle mit dem gr\u00f6\u00dften ROI f\u00fcr Ihr Unternehmen.',
+                desc: 'Erfahren Sie konkrete KI-Anwendungsf\u00e4lle mit dem gr\u00f6\u00dften ROI f\u00fcr Ihr Unternehmen.',
                 color: 'accent',
               },
               {
@@ -143,7 +150,7 @@ export default function Home() {
               {
                 num: '04',
                 title: 'Sofort handeln',
-                desc: 'Starten Sie mit konkreten, umsetzbaren Schritten \u2013 von Level 1 bis Level 4.',
+                desc: 'Starten Sie mit konkreten und vorallem umsetzbaren Schritten - Step by Step.',
                 color: 'accent',
               },
             ].map((item, i) => (
@@ -193,7 +200,7 @@ export default function Home() {
               {
                 step: '3',
                 title: 'Ma\u00dfnahmen umsetzen',
-                desc: 'Nutzen Sie die konkreten Handlungsempfehlungen, um Ihr Unternehmen Schritt f\u00fcr Schritt KI-ready zu machen.',
+                desc: 'Nutzen Sie unsere konkreten Handlungsempfehlungen, um Ihr Unternehmen Schritt f\u00fcr Schritt KI-ready zu machen.',
                 icon: (
                   <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -215,7 +222,7 @@ export default function Home() {
           </div>
           <div className="text-center mt-12">
             <a href="/assessment" className="btn-primary">
-              Jetzt kostenlosen Check starten
+              Jetzt kostenfreien Check starten
               <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -230,14 +237,14 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="section-title">W&auml;hlen Sie Ihren KI-Kompass</h2>
             <p className="section-subtitle mt-4">
-              Vom kostenlosen Schnell-Check bis zum pers&ouml;nlichen Strategiegespr&auml;ch.
+              Vom kostenfreien Schnell-Check bis zum pers&ouml;nlichen Strategiegespr&auml;ch. Sie entscheiden!
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* Free */}
             <div className="card text-center border-2 border-gray-200 hover:border-primary-300 transition-colors">
               <div className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Schnell-Check</div>
-              <div className="text-4xl font-extrabold text-gray-900 mb-1">Kostenlos</div>
+              <div className="text-4xl font-extrabold text-gray-900 mb-1">Kostenfrei</div>
               <p className="text-gray-500 mb-6">Ihr erster Schritt</p>
               <ul className="space-y-3 text-left mb-8">
                 {['12 Fragen zum KI-Reifegrad', 'Sofort-Score mit Einordnung', 'Allgemeine Handlungstipps', 'Vergleich mit Ihrer Branche'].map((f, i) => (
@@ -265,7 +272,7 @@ export default function Home() {
               <ul className="space-y-3 text-left mb-8">
                 {[
                   'Alles aus dem Schnell-Check',
-                  '35+ Detailfragen',
+                  '30+ Detailfragen',
                   'Ausf\u00fchrlicher PDF-Report (20+ Seiten)',
                   'Individuelle KI-Roadmap',
                   'Use-Case-Empfehlungen',
@@ -319,7 +326,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
             {[
-              { num: '200+', label: 'Unternehmen gepr\u00fcft' },
+              { num: '50+', label: 'Unternehmen gepr\u00fcft' },
               { num: '94%', label: 'Weiterempfehlung' },
               { num: '12', label: 'Fragen im Schnell-Check' },
               { num: '5 Min', label: 'bis zum Ergebnis' },
@@ -383,11 +390,11 @@ export default function Home() {
             Bereit, den n&auml;chsten Schritt zu machen?
           </h2>
           <p className="text-xl text-primary-200 mb-10">
-            Starten Sie jetzt Ihren kostenlosen KI-Readiness Check und erfahren Sie,
+            Starten Sie jetzt Ihren kostenfreien KI-Readiness Check und erfahren Sie,
             welches KI-Potenzial in Ihrem Unternehmen steckt.
           </p>
           <a href="/assessment" className="inline-flex items-center justify-center px-10 py-5 text-lg font-semibold text-primary-700 bg-white rounded-xl hover:bg-primary-50 transition-all duration-200 shadow-xl hover:shadow-2xl hover:-translate-y-0.5">
-            Kostenlosen Check starten
+            Kostenfreien Check starten
             <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>

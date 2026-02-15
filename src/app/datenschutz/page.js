@@ -103,9 +103,7 @@ export default function Datenschutz() {
 
             <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mt-8">
               <p className="text-yellow-800 text-sm font-medium">
-                Hinweis: Diese Datenschutzerkl&auml;rung ist ein Entwurf. Lassen Sie sie vor
-                Ver&ouml;ffentlichung idealerweise von einem Rechtsanwalt pr&uuml;fen.
-              </p>
+                </p>
             </div>
           </div>
         </div>

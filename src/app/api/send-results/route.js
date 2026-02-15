@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { customers } from '../../../data/customers'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
+import { savePremiumAssessmentResult } from '../../../lib/google-sheets'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
 
@@ -29,6 +30,18 @@ export async function POST(request) {
     const safeEmail = (contactEmail || '').slice(0, 200).replace(/[<>\r\n]/g, '')
 
     const { percentage, level, levelTitle, categoryScores, quickWins, recommendations } = results || {}
+
+    // Google Sheets: Premium-Ergebnisse speichern
+    savePremiumAssessmentResult({
+      companyName: safeCompany,
+      contactName: safeName,
+      contactEmail: safeEmail,
+      plan: customer.plan,
+      percentage,
+      level,
+      levelTitle,
+      categoryScores,
+    }).catch(() => {})
 
     // Kategorie-Tabelle erstellen
     const categoryRows = (categoryScores || [])

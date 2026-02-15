@@ -33,7 +33,7 @@ export default function Impressum() {
                 Steffen Hefter<br />
                 Wilhelm-Schrader-Stra&szlig;e 27a<br />
                 06120 Halle (Saale)
-              </p>
+		</p>
             </section>
 
             <section>
@@ -47,8 +47,7 @@ export default function Impressum() {
 
             <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mt-8">
               <p className="text-yellow-800 text-sm font-medium">
-                Hinweis: Bitte erg&auml;nzen Sie ggf. noch Ihre USt-IdNr. und Telefonnummer,
-                bevor Sie die Website ver&ouml;ffentlichen.
+                
               </p>
             </div>
           </div>

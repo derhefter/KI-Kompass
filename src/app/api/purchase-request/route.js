@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
+import { saveCustomerData } from '../../../lib/google-sheets'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
+
+function escapeHtml(text) {
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }
+  return String(text).replace(/[&<>"']/g, (m) => map[m])
+}
 
 export async function POST(request) {
   try {
@@ -24,15 +30,30 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Ungültige E-Mail' }, { status: 400 })
     }
 
-    const safeName = name.slice(0, 200).replace(/[<>\r\n]/g, '')
-    const safeMail = email.slice(0, 200).replace(/[<>\r\n]/g, '')
-    const safeCompany = (company || '–').slice(0, 200).replace(/[<>\r\n]/g, '')
-    const safePhone = (phone || '–').slice(0, 50).replace(/[<>\r\n]/g, '')
+    if (email.length > 254) {
+      return NextResponse.json({ error: 'E-Mail zu lang' }, { status: 400 })
+    }
+
+    const safeName = escapeHtml(name.slice(0, 200).replace(/[\r\n]/g, ''))
+    const safeMail = email.slice(0, 254).replace(/[<>\r\n"'&]/g, '')
+    const safeCompany = escapeHtml((company || '–').slice(0, 200).replace(/[\r\n]/g, ''))
+    const safePhone = escapeHtml((phone || '–').slice(0, 50).replace(/[\r\n]/g, ''))
 
     const planName = plan === 'premium' ? 'Premium Report (197 €)' : 'Strategie-Paket (497 €)'
     const planPrice = plan === 'premium' ? '197' : '497'
     const paypalLink = `https://paypal.me/frimalo/${planPrice}EUR`
     const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL || ''
+
+    // Google Sheets: Kundendaten speichern
+    saveCustomerData({
+      name: safeName,
+      email: safeMail,
+      company: safeCompany,
+      phone: safePhone,
+      plan: planName,
+      paymentMethod: 'PayPal (angeboten)',
+      amount: `${planPrice} €`,
+    }).catch(() => {})
 
     // 1. Benachrichtigung an Steffen
     const ownerSent = await sendNotificationToOwner({
