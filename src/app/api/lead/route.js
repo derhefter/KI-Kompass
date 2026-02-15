@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { sendNotificationToOwner } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
-import { saveFreeAssessmentResult, saveCustomerData } from '../../../lib/google-sheets'
+import { saveFreeAssessmentResult } from '../../../lib/google-sheets'
 
 const limiter = rateLimit({ maxRequests: 5, windowMs: 60 * 1000 })
 
@@ -21,17 +21,9 @@ export async function POST(request) {
     const safeMail = email.slice(0, 200).replace(/[<>\r\n]/g, '')
     const safeCompany = (company || 'Nicht angegeben').slice(0, 200).replace(/[<>\r\n]/g, '')
 
-    // Google Sheets: Erstumfrage-Ergebnis + Kundendaten speichern
+    // Google Sheets: Nur Erstumfrage-Ergebnis speichern (NICHT in Kundendaten!)
+    // Kundendaten-Eintrag erfolgt erst bei tatsächlicher Kaufanfrage (PayPal/Rechnung)
     saveFreeAssessmentResult({ email: safeMail, company: safeCompany, score, level }).catch(() => {})
-    saveCustomerData({
-      name: '–',
-      email: safeMail,
-      company: safeCompany,
-      phone: '–',
-      plan: 'Schnell-Check (kostenlos)',
-      paymentMethod: '–',
-      amount: '0',
-    }).catch(() => {})
 
     await sendNotificationToOwner({
       subject: `Neuer KI-Kompass Lead: ${safeCompany}`,

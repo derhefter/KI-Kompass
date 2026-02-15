@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
-import { saveCustomerData, saveAccessCode } from '../../../lib/google-sheets'
+import { saveAccessCode } from '../../../lib/google-sheets'
 import crypto from 'crypto'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
@@ -75,16 +75,8 @@ export async function POST(request) {
       createdAt: createdAtISO,
     }).catch((err) => console.error('Fehler beim Speichern des Zugangscodes:', err.message))
 
-    // Google Sheets: Kundendaten speichern (Rechnung)
-    saveCustomerData({
-      name: safeName,
-      email: safeMail,
-      company: safeCompany,
-      phone: '–',
-      plan: planName,
-      paymentMethod: 'Rechnung',
-      amount: `${planPrice} €`,
-    }).catch(() => {})
+    // Kundendaten werden NICHT hier gespeichert – das passiert bereits in /api/purchase-request
+    // (verhindert doppelte Einträge in der Kundendatenbank)
 
     // Vorbereitete E-Mail-Vorlage für den Kunden (zum Kopieren/Versenden durch Steffen)
     const customerEmailTemplate = `

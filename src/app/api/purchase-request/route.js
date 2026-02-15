@@ -51,7 +51,7 @@ export async function POST(request) {
       company: safeCompany,
       phone: safePhone,
       plan: planName,
-      paymentMethod: 'PayPal (angeboten)',
+      paymentMethod: 'PayPal / Rechnung',
       amount: `${planPrice} €`,
     }).catch(() => {})
 
