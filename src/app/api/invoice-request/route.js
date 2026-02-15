@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
-import { saveCustomerData } from '../../../lib/google-sheets'
+import { saveCustomerData, saveAccessCode } from '../../../lib/google-sheets'
 import crypto from 'crypto'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
@@ -63,6 +63,17 @@ export async function POST(request) {
     const expiresAtISO = expiresAt.toISOString()
     const expiresAtFormatted = expiresAt.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
     const createdAtISO = new Date().toISOString()
+
+    // Google Sheets: Zugangscode speichern (sofort aktiv – kein manuelles Deployment nötig!)
+    saveAccessCode({
+      code: accessCode,
+      name: safeName,
+      email: safeMail,
+      company: safeCompany,
+      plan,
+      expiresAt: expiresAtISO,
+      createdAt: createdAtISO,
+    }).catch((err) => console.error('Fehler beim Speichern des Zugangscodes:', err.message))
 
     // Google Sheets: Kundendaten speichern (Rechnung)
     saveCustomerData({

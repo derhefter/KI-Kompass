@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { customers } from '../../../data/customers'
+import { findAccessCode } from '../../../lib/google-sheets'
 import { rateLimit } from '../../../lib/rate-limit'
 import crypto from 'crypto'
 
@@ -32,9 +33,23 @@ export async function POST(request) {
     const trimmedCode = code.trim()
     let matchedCustomer = null
 
+    // 1. Zuerst in der lokalen customers.js suchen (für manuell eingetragene Kunden)
     for (const customer of customers) {
       if (constantTimeEqual(customer.code, trimmedCode)) {
         matchedCustomer = customer
+      }
+    }
+
+    // 2. Falls nicht in customers.js gefunden → in Google Sheets suchen (dynamisch generierte Codes)
+    if (!matchedCustomer) {
+      try {
+        const sheetCustomer = await findAccessCode(trimmedCode)
+        if (sheetCustomer && sheetCustomer.status !== 'deaktiviert') {
+          matchedCustomer = sheetCustomer
+        }
+      } catch (err) {
+        console.error('Google Sheets Lesefehler bei Code-Verifikation:', err.message)
+        // Weiter ohne Sheets-Daten – nur customers.js wird geprüft
       }
     }
 
@@ -45,7 +60,7 @@ export async function POST(request) {
     // Ablaufdatum prüfen
     if (matchedCustomer.expiresAt) {
       const expiryDate = new Date(matchedCustomer.expiresAt)
-      if (expiryDate < new Date()) {
+      if (!isNaN(expiryDate.getTime()) && expiryDate < new Date()) {
         return NextResponse.json({
           valid: false,
           expired: true,

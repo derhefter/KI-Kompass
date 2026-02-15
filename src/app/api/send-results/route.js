@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { customers } from '../../../data/customers'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
-import { savePremiumAssessmentResult } from '../../../lib/google-sheets'
+import { savePremiumAssessmentResult, findAccessCode } from '../../../lib/google-sheets'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
 
@@ -20,7 +20,18 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
     }
 
-    const customer = customers.find((c) => c.code === code.trim())
+    // Zuerst in customers.js suchen, dann in Google Sheets
+    let customer = customers.find((c) => c.code === code.trim())
+    if (!customer) {
+      try {
+        const sheetCustomer = await findAccessCode(code.trim())
+        if (sheetCustomer && sheetCustomer.status !== 'deaktiviert') {
+          customer = sheetCustomer
+        }
+      } catch {
+        // Weiter ohne Sheets
+      }
+    }
     if (!customer) {
       return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
     }

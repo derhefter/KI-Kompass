@@ -116,6 +116,91 @@ async function appendToSheet(spreadsheetId, range, values) {
 }
 
 // ============================================================
+// ZUGANGSCODES – Speichern und Lesen (dynamische Kundenverwaltung)
+// ============================================================
+// Codes werden im Kundendaten-Sheet im Tab "Zugangscodes" gespeichert.
+// Spalten: Code | Name | E-Mail | Firma | Plan | Erstellt | Ablaufdatum | Status
+// ============================================================
+
+export async function saveAccessCode({ code, name, email, company, plan, expiresAt, createdAt }) {
+  const sheetId = process.env.GOOGLE_SHEET_CUSTOMERS
+  return appendToSheet(sheetId, 'Zugangscodes!A:H', [
+    [
+      code,
+      name || '–',
+      email || '–',
+      company || '–',
+      plan || 'premium',
+      createdAt || new Date().toISOString(),
+      expiresAt || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      'aktiv',
+    ],
+  ])
+}
+
+async function readFromSheet(spreadsheetId, range) {
+  const cleanId = extractSheetId(spreadsheetId)
+  if (!cleanId) return null
+
+  if (!isConfigured()) return null
+
+  const auth = await getAuth()
+  if (!auth) return null
+
+  const sheets = google.sheets({ version: 'v4', auth })
+
+  try {
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: cleanId,
+      range,
+    })
+    return res.data.values || []
+  } catch (err) {
+    // Fallback auf "Tabellenblatt1" falls Tab nicht existiert
+    if (err.message && err.message.includes('Unable to parse range')) {
+      const fallbackRange = range.replace(/^[^!]+!/, 'Tabellenblatt1!')
+      try {
+        const res = await sheets.spreadsheets.values.get({
+          spreadsheetId: cleanId,
+          range: fallbackRange,
+        })
+        return res.data.values || []
+      } catch {
+        return null
+      }
+    }
+    console.error('Google Sheets Lesefehler:', err.message)
+    return null
+  }
+}
+
+export async function findAccessCode(code) {
+  if (!code) return null
+
+  const sheetId = process.env.GOOGLE_SHEET_CUSTOMERS
+  const rows = await readFromSheet(sheetId, 'Zugangscodes!A:H')
+  if (!rows) return null
+
+  // Spalten: 0=Code, 1=Name, 2=E-Mail, 3=Firma, 4=Plan, 5=Erstellt, 6=Ablaufdatum, 7=Status
+  const trimmedCode = code.trim()
+  for (const row of rows) {
+    if (row[0] && row[0].trim() === trimmedCode) {
+      return {
+        code: row[0],
+        name: row[1] || '',
+        email: row[2] || '',
+        company: row[3] || '',
+        plan: row[4] || 'premium',
+        createdAt: row[5] || '',
+        expiresAt: row[6] || '',
+        status: row[7] || 'aktiv',
+      }
+    }
+  }
+  return null
+}
+
+// ============================================================
 // 1. Erstumfrage-Ergebnisse (12 Fragen) speichern
 // ============================================================
 export async function saveFreeAssessmentResult({ email, company, score, level }) {
