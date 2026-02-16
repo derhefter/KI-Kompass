@@ -88,7 +88,6 @@ async function appendToSheet(spreadsheetId, range, values) {
       insertDataOption: 'INSERT_ROWS',
       requestBody: { values },
     })
-    console.log(`Google Sheets: Daten erfolgreich gespeichert in ${range}`)
     return true
   } catch (err) {
     // Falls der Tab-Name nicht existiert, versuche "Tabellenblatt1" (Standard-Tab in deutschen Google Sheets)
@@ -103,7 +102,6 @@ async function appendToSheet(spreadsheetId, range, values) {
           insertDataOption: 'INSERT_ROWS',
           requestBody: { values },
         })
-        console.log(`Google Sheets: Daten gespeichert in Fallback-Tab ${fallbackRange}`)
         return true
       } catch (fallbackErr) {
         console.error('Google Sheets Schreibfehler (auch Fallback fehlgeschlagen):', fallbackErr.message)

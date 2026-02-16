@@ -5,6 +5,17 @@ import { saveCustomerData } from '../../../lib/google-sheets'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
 
+// Schutz gegen Doppel-Absendung (gleiche E-Mail + Plan innerhalb von 5 Minuten)
+const recentRequests = new Map()
+const DEDUP_WINDOW = 5 * 60 * 1000
+
+setInterval(() => {
+  const now = Date.now()
+  for (const [key, timestamp] of recentRequests) {
+    if (now - timestamp > DEDUP_WINDOW) recentRequests.delete(key)
+  }
+}, 60 * 1000)
+
 function escapeHtml(text) {
   const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }
   return String(text).replace(/[&<>"']/g, (m) => map[m])
@@ -29,6 +40,13 @@ export async function POST(request) {
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: 'Ungültige E-Mail' }, { status: 400 })
     }
+
+    // Duplikat-Schutz: gleiche E-Mail + Plan innerhalb von 5 Minuten → Anfrage ablehnen
+    const dedupKey = `${email.toLowerCase().trim()}_${plan}`
+    if (recentRequests.has(dedupKey)) {
+      return NextResponse.json({ success: true })
+    }
+    recentRequests.set(dedupKey, Date.now())
 
     if (email.length > 254) {
       return NextResponse.json({ error: 'E-Mail zu lang' }, { status: 400 })
