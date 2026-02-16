@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { customers } from '../../../data/customers'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
-import { savePremiumAssessmentResult, findAccessCode } from '../../../lib/google-sheets'
+import { savePremiumAssessmentResult, findAccessCode, saveDetailedAnswers } from '../../../lib/google-sheets'
+import { premiumQuestions } from '../../../data/questions'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
 
@@ -40,7 +41,7 @@ export async function POST(request) {
     const safeCompany = (companyName || '').slice(0, 200).replace(/[<>\r\n]/g, '')
     const safeEmail = (contactEmail || '').slice(0, 200).replace(/[<>\r\n]/g, '')
 
-    const { percentage, level, levelTitle, categoryScores, quickWins, recommendations } = results || {}
+    const { percentage, level, levelTitle, categoryScores, quickWins, recommendations, answers } = results || {}
 
     // Google Sheets: Premium-Ergebnisse speichern
     savePremiumAssessmentResult({
@@ -53,6 +54,19 @@ export async function POST(request) {
       levelTitle,
       categoryScores,
     }).catch(() => {})
+
+    // Google Sheets: Detaillierte Einzelantworten speichern
+    if (answers && Array.isArray(answers) && answers.length > 0) {
+      saveDetailedAnswers({
+        sheetId: process.env.GOOGLE_SHEET_PREMIUM_RESULTS,
+        checkType: 'Premium Assessment',
+        company: safeCompany,
+        name: safeName,
+        email: safeEmail,
+        answers,
+        questions: premiumQuestions,
+      }).catch(() => {})
+    }
 
     // Kategorie-Tabelle erstellen
     const categoryRows = (categoryScores || [])
@@ -74,6 +88,22 @@ export async function POST(request) {
     const recommendationsList = (recommendations || [])
       .map((rec) => `<li style="margin-bottom:12px;"><strong>[${rec.priority.toUpperCase()}] ${rec.title}</strong> (${rec.category})<br/><ul>${rec.actions.map((a) => `<li style="color:#6b7280;">${a}</li>`).join('')}</ul></li>`)
       .join('')
+
+    // Einzelantworten-Tabelle für Steffen-E-Mail
+    const answersTableHtml = (answers && Array.isArray(answers) && answers.length > 0)
+      ? answers.map((answer) => {
+          const question = premiumQuestions.find((q) => q.id === answer.questionId)
+          const safeQ = question ? question.question.replace(/[<>]/g, '') : '–'
+          const safeCat = question ? question.categoryLabel.replace(/[<>]/g, '') : '–'
+          const safeAns = (answer.text || '–').replace(/[<>]/g, '')
+          return `<tr>
+            <td style="padding:5px 8px;border-bottom:1px solid #e5e7eb;font-size:12px;color:#6b7280;">${safeCat}</td>
+            <td style="padding:5px 8px;border-bottom:1px solid #e5e7eb;font-size:12px;">${safeQ}</td>
+            <td style="padding:5px 8px;border-bottom:1px solid #e5e7eb;font-size:12px;font-weight:bold;">${safeAns}</td>
+            <td style="padding:5px 8px;border-bottom:1px solid #e5e7eb;text-align:center;font-weight:bold;color:${answer.score >= 3 ? '#22c55e' : answer.score >= 2 ? '#f59e0b' : '#ef4444'}">${answer.score}/4</td>
+          </tr>`
+        }).join('')
+      : ''
 
     const datum = new Date().toLocaleDateString('de-DE')
 
@@ -100,6 +130,19 @@ export async function POST(request) {
           </table>
 
           ${quickWinsList ? `<h3 style="color:#1f2937;">Ihre Quick-Wins</h3><ul>${quickWinsList}</ul>` : ''}
+
+          ${answersTableHtml ? `
+          <h3 style="color:#1f2937;margin-top:24px;">Ihre Antworten im &Uuml;berblick</h3>
+          <table style="border-collapse:collapse;width:100%;font-size:12px;margin-bottom:24px;">
+            <thead><tr style="background:#f3f4f6;">
+              <th style="padding:5px 8px;text-align:left;">Bereich</th>
+              <th style="padding:5px 8px;text-align:left;">Frage</th>
+              <th style="padding:5px 8px;text-align:left;">Ihre Antwort</th>
+              <th style="padding:5px 8px;text-align:center;">Score</th>
+            </tr></thead>
+            <tbody>${answersTableHtml}</tbody>
+          </table>
+          ` : ''}
 
           <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:20px;margin-top:24px;">
             <p style="margin:0 0 8px;font-weight:bold;">N&auml;chster Schritt?</p>
@@ -142,6 +185,20 @@ export async function POST(request) {
 
           ${recommendationsList ? `<h3>Empfehlungen</h3><ul>${recommendationsList}</ul>` : ''}
           ${quickWinsList ? `<h3>Quick-Wins</h3><ul>${quickWinsList}</ul>` : ''}
+
+          ${answersTableHtml ? `
+          <h3 style="margin-top:24px;">Alle Einzelantworten (${answers.length} Fragen)</h3>
+          <table style="border-collapse:collapse;width:100%;font-size:12px;">
+            <thead><tr style="background:#f3f4f6;">
+              <th style="padding:5px 8px;text-align:left;">Bereich</th>
+              <th style="padding:5px 8px;text-align:left;">Frage</th>
+              <th style="padding:5px 8px;text-align:left;">Antwort</th>
+              <th style="padding:5px 8px;text-align:center;">Score</th>
+            </tr></thead>
+            <tbody>${answersTableHtml}</tbody>
+          </table>
+          <p style="font-size:12px;color:#9ca3af;margin-top:8px;">Die Einzelantworten wurden auch in Google Sheets gespeichert (Tab "Einzelantworten").</p>
+          ` : ''}
         </div>
       </div>
     `

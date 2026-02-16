@@ -178,7 +178,14 @@ export default function Assessment() {
                           await fetch('/api/lead', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ email, company, score: result.percentage, level: result.level }),
+                            body: JSON.stringify({
+                              email,
+                              company,
+                              score: result.percentage,
+                              level: result.level,
+                              answers,
+                              categoryScores: result.categoryScores,
+                            }),
                           })
                         } catch {
                           // API nicht erreichbar - trotzdem Danke zeigen

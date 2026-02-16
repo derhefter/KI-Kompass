@@ -201,6 +201,50 @@ export async function findAccessCode(code) {
 }
 
 // ============================================================
+// DETAILLIERTE EINZELANTWORTEN speichern (für beide Checks)
+// ============================================================
+// Speichert jede einzelne Antwort in einem eigenen Tab "Einzelantworten"
+// im jeweiligen Sheet (Free oder Premium).
+// Spalten: Datum | Firma | Name | E-Mail | Check-Art | Frage-Nr | Kategorie | Frage | Antwort | Score
+// ============================================================
+
+export async function saveDetailedAnswers({
+  sheetId,
+  checkType,
+  company,
+  name,
+  email,
+  answers,
+  questions,
+}) {
+  if (!answers || !answers.length || !questions || !questions.length) return false
+
+  const datum = new Date().toLocaleString('de-DE')
+  const safeName = name || '–'
+  const safeCompany = company || '–'
+  const safeEmail = email || '–'
+
+  // Jede Antwort als eigene Zeile
+  const rows = answers.map((answer) => {
+    const question = questions.find((q) => q.id === answer.questionId)
+    return [
+      datum,
+      safeCompany,
+      safeName,
+      safeEmail,
+      checkType, // 'Schnell-Check (kostenlos)' oder 'Premium Assessment'
+      answer.questionId,
+      question ? question.categoryLabel : '–',
+      question ? question.question : '–',
+      answer.text || '–',
+      typeof answer.score === 'number' ? answer.score : '–',
+    ]
+  })
+
+  return appendToSheet(sheetId, 'Einzelantworten!A:J', rows)
+}
+
+// ============================================================
 // 1. Erstumfrage-Ergebnisse (12 Fragen) speichern
 // ============================================================
 export async function saveFreeAssessmentResult({ email, company, score, level }) {

@@ -247,6 +247,7 @@ export default function PremiumAssessment() {
         categoryScores: result.categoryScores,
         quickWins: qw,
         recommendations: recs,
+        answers: newAnswers,
       })
     }
   }
