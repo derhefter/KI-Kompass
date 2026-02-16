@@ -107,6 +107,49 @@ export async function POST(request) {
 
     const datum = new Date().toLocaleDateString('de-DE')
 
+    // Branche-Antworten (601-605) für Zusammenfassung extrahieren
+    const brancheQuestionIds = [601, 602, 603, 604, 605]
+    const brancheAnswers = brancheQuestionIds.map((qId) => {
+      const answer = (answers || []).find((a) => a.questionId === qId)
+      const question = premiumQuestions.find((q) => q.id === qId)
+      return {
+        id: qId,
+        question: question ? question.question : '–',
+        answer: answer ? (answer.text || '–') : '–',
+        score: answer ? answer.score : 0,
+      }
+    })
+
+    const brancheSummaryHtml = brancheAnswers.length > 0 ? `
+      <div style="margin-top:24px;padding:20px;background:#f0fdf4;border:2px solid #86efac;border-radius:8px;">
+        <h3 style="margin-top:0;color:#065f46;">Kundenprofil: Branche & Situation (Fragen 601-605)</h3>
+        <p style="color:#064e3b;font-size:13px;margin-bottom:12px;">Diese Antworten geben dir einen schnellen Überblick über die Branche, Größe und aktuelle Herausforderungen des Kunden:</p>
+        <table style="border-collapse:collapse;width:100%;font-size:13px;">
+          ${brancheAnswers.map((ba) => `
+            <tr>
+              <td style="padding:6px 8px;border-bottom:1px solid #bbf7d0;color:#6b7280;width:40%;">${ba.question.replace(/[<>]/g, '')}</td>
+              <td style="padding:6px 8px;border-bottom:1px solid #bbf7d0;font-weight:bold;">${ba.answer.replace(/[<>]/g, '')}</td>
+            </tr>
+          `).join('')}
+        </table>
+        <div style="margin-top:12px;padding:12px;background:#ecfdf5;border-radius:6px;">
+          <p style="margin:0 0 8px;font-weight:bold;color:#065f46;">Empfehlung für den Report:</p>
+          <p style="margin:0;color:#064e3b;font-size:13px;">
+            <strong>Branche:</strong> ${brancheAnswers[0].answer.replace(/[<>]/g, '')} |
+            <strong>Größe:</strong> ${brancheAnswers[1].answer.replace(/[<>]/g, '')} |
+            <strong>Fachkräftemangel:</strong> ${brancheAnswers[2].answer.replace(/[<>]/g, '')}
+          </p>
+          <p style="margin:8px 0 0;color:#064e3b;font-size:13px;">
+            <strong>Externe Partner:</strong> ${brancheAnswers[3].answer.replace(/[<>]/g, '')} |
+            <strong>Digitalisierungsdruck:</strong> ${brancheAnswers[4].answer.replace(/[<>]/g, '')}
+          </p>
+          <p style="margin:12px 0 0;color:#065f46;font-size:13px;font-style:italic;">
+            ➡️ Bitte nutze diese Informationen, um den PDF-Report mit branchenspezifischen Use-Cases, passenden Fördermitteln und individuellen Handlungsempfehlungen anzureichern.
+          </p>
+        </div>
+      </div>
+    ` : ''
+
     // E-Mail an den Kunden
     const customerHtml = `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#1f2937;">
@@ -145,8 +188,20 @@ export async function POST(request) {
           ` : ''}
 
           <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:20px;margin-top:24px;">
-            <p style="margin:0 0 8px;font-weight:bold;">N&auml;chster Schritt?</p>
-            <p style="margin:0;color:#6b7280;">Besprechen Sie Ihren Report in einem pers&ouml;nlichen Strategiegespr&auml;ch mit Steffen Hefter und entwickeln Sie Ihre individuelle KI-Strategie.</p>
+            <p style="margin:0 0 12px;font-weight:bold;font-size:16px;">Wie geht es weiter?</p>
+            <p style="margin:0 0 12px;color:#1f2937;">Auf Basis Ihrer Antworten erstellen wir Ihnen jetzt Ihren <strong>ausf&uuml;hrlichen PDF-Report (20+ Seiten)</strong> mit:</p>
+            <ul style="margin:0 0 12px;padding-left:20px;color:#1f2937;">
+              <li style="margin-bottom:6px;"><strong>Individuelle KI-Roadmap</strong> &ndash; Ihr Fahrplan f&uuml;r die n&auml;chsten 6 Monate</li>
+              <li style="margin-bottom:6px;"><strong>Use-Case-Empfehlungen f&uuml;r Ihre Branche</strong> &ndash; konkrete Anwendungsf&auml;lle, die zu Ihrem Unternehmen passen</li>
+              <li style="margin-bottom:6px;"><strong>F&ouml;rdermittel-&Uuml;bersicht</strong> &ndash; relevante Programme zur Finanzierung Ihrer KI-Projekte</li>
+              <li style="margin-bottom:6px;"><strong>Tool-Empfehlungen pro Bereich</strong> &ndash; passende KI-Tools f&uuml;r Ihre spezifischen Anforderungen</li>
+            </ul>
+            <p style="margin:0;color:#6b7280;font-size:14px;">Sie erhalten Ihren Report zeitnah per E-Mail.</p>
+          </div>
+
+          <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:16px;margin-top:16px;">
+            <p style="margin:0 0 8px;font-weight:bold;color:#92400e;">Sie m&ouml;chten noch mehr?</p>
+            <p style="margin:0;color:#78350f;font-size:14px;">Mit unserem <strong>Strategie-Paket</strong> erhalten Sie zus&auml;tzlich ein 60-min&uuml;tiges pers&ouml;nliches Strategiegespr&auml;ch, eine individuelle KI-Strategie, F&ouml;rdermittelberatung und 30 Tage E-Mail-Support. <a href="https://ki-kompass-rust.vercel.app/anfrage?plan=strategie" style="color:#2563eb;font-weight:bold;">Jetzt Strategie-Paket entdecken &rarr;</a></p>
           </div>
 
           <p style="margin-top:24px;color:#6b7280;font-size:14px;">Bei Fragen antworten Sie einfach auf diese E-Mail.</p>
@@ -199,6 +254,8 @@ export async function POST(request) {
           </table>
           <p style="font-size:12px;color:#9ca3af;margin-top:8px;">Die Einzelantworten wurden auch in Google Sheets gespeichert (Tab "Einzelantworten").</p>
           ` : ''}
+
+          ${brancheSummaryHtml}
         </div>
       </div>
     `

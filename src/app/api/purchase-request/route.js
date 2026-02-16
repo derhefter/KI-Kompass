@@ -117,7 +117,7 @@ export async function POST(request) {
               <ol style="margin-bottom:0;padding-left:20px;">
                 <li>Zahlung per PayPal oder &Uuml;berweisung</li>
                 <li>Nach Zahlungseingang schalten wir Ihren Zugang frei</li>
-                <li>Sie starten das Premium Assessment (35 Detailfragen)</li>
+                <li>Sie starten das Premium Assessment (30 Detailfragen)</li>
                 <li>Sie erhalten Ihren individuellen KI-Readiness Report</li>
                 ${plan === 'strategie' ? '<li>Ihr Strategiegespräch findet zum gebuchten Termin statt</li>' : ''}
               </ol>

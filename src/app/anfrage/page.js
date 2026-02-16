@@ -10,7 +10,7 @@ const plans = {
     price: '197',
     color: 'primary',
     features: [
-      '35+ Detailfragen zur Tiefenanalyse',
+      '30+ Detailfragen zur Tiefenanalyse',
       'Ausf\u00fchrlicher PDF-Report (20+ Seiten)',
       'Individuelle KI-Roadmap',
       'Use-Case-Empfehlungen f\u00fcr Ihre Branche',
@@ -355,7 +355,7 @@ export default function Anfrage() {
                 </li>
                 <li className="flex items-start">
                   <span className="w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">3</span>
-                  Sie starten das Premium Assessment (35 Detailfragen)
+                  Sie starten das Premium Assessment (30 Detailfragen)
                 </li>
                 {plan === 'strategie' && (
                   <li className="flex items-start">

@@ -441,24 +441,47 @@ export default function PremiumAssessment() {
             </button>
           </div>
 
-          {/* Strategie-Paket Upsell */}
+          {/* Strategie-Paket Hinweis */}
           <div className="card border-2 border-accent-400 bg-gradient-to-br from-accent-50 to-white text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Bereit f&uuml;r den n&auml;chsten Schritt?
+              Sie m&ouml;chten noch mehr?
             </h2>
-            <p className="text-gray-600 mb-6 max-w-xl mx-auto">
-              Besprechen Sie Ihren Report in einem pers&ouml;nlichen 60-Min. Strategiegespr&auml;ch
-              mit KI-Berater Steffen Hefter und entwickeln Sie gemeinsam Ihre individuelle KI-Strategie.
+            <p className="text-gray-600 mb-4 max-w-xl mx-auto">
+              Mit unserem <strong>Strategie-Paket</strong> erhalten Sie zus&auml;tzlich zu Ihrem Premium Report:
             </p>
+            <ul className="text-left max-w-md mx-auto mb-6 space-y-2">
+              <li className="flex items-start text-gray-700">
+                <svg className="w-5 h-5 text-accent-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+                60-Min. pers&ouml;nliches Video-Strategiegespr&auml;ch
+              </li>
+              <li className="flex items-start text-gray-700">
+                <svg className="w-5 h-5 text-accent-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+                Individuelle KI-Strategie f&uuml;r Ihr Unternehmen
+              </li>
+              <li className="flex items-start text-gray-700">
+                <svg className="w-5 h-5 text-accent-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+                Pers&ouml;nliche F&ouml;rdermittelberatung
+              </li>
+              <li className="flex items-start text-gray-700">
+                <svg className="w-5 h-5 text-accent-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+                30 Tage E-Mail-Support
+              </li>
+            </ul>
             <a
-              href={process.env.NEXT_PUBLIC_BOOKING_URL || '/anfrage?plan=strategie'}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/anfrage?plan=strategie"
               className="btn-accent"
             >
-              Termin f&uuml;r Strategiegespr&auml;ch buchen
+              Strategie-Paket entdecken
               <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </a>
           </div>

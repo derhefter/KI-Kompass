@@ -515,7 +515,7 @@ Wilhelm-Schrader-Str. 27a, 06120 Halle (Saale)`
                 <li>Sie erhalten Ihre Rechnung per E-Mail</li>
                 <li>Ihr Zugang wird innerhalb von 12 Stunden freigeschaltet</li>
                 <li>Sie erhalten Ihren pers&ouml;nlichen Zugangscode per E-Mail</li>
-                <li>Sie starten das Premium Assessment (35 Detailfragen)</li>
+                <li>Sie starten das Premium Assessment (30 Detailfragen)</li>
                 <li>Sie erhalten Ihren individuellen KI-Readiness Report</li>
                 ${plan === 'strategie' ? '<li>Wir vereinbaren einen Termin f&uuml;r Ihr 60-Min. Strategiegespr&auml;ch</li>' : ''}
               </ol>
