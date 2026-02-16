@@ -44,6 +44,10 @@ export default function Anfrage() {
   const [invoiceRequested, setInvoiceRequested] = useState(false)
   const [invoiceSending, setInvoiceSending] = useState(false)
   const [invoiceError, setInvoiceError] = useState('')
+  const [showInvoiceForm, setShowInvoiceForm] = useState(false)
+  const [street, setStreet] = useState('')
+  const [plz, setPlz] = useState('')
+  const [city, setCity] = useState('')
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -90,12 +94,27 @@ export default function Anfrage() {
 
   async function handleInvoiceRequest() {
     setInvoiceError('')
+
+    // Adressdaten validieren
+    if (!street || street.trim().length < 3) {
+      setInvoiceError('Bitte geben Sie Ihre Straße und Hausnummer ein.')
+      return
+    }
+    if (!plz || !/^\d{4,5}$/.test(plz.trim())) {
+      setInvoiceError('Bitte geben Sie eine gültige Postleitzahl ein.')
+      return
+    }
+    if (!city || city.trim().length < 2) {
+      setInvoiceError('Bitte geben Sie Ihren Ort ein.')
+      return
+    }
+
     setInvoiceSending(true)
     try {
       const res = await fetch('/api/invoice-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan, name, email, company }),
+        body: JSON.stringify({ plan, name, email, company, street: street.trim(), plz: plz.trim(), city: city.trim() }),
       })
       const data = await res.json()
       if (data.success) {
@@ -172,37 +191,113 @@ export default function Anfrage() {
                   </svg>
                   <h3 className="font-bold text-gray-900 text-lg">Lieber per Rechnung zahlen?</h3>
                 </div>
-                <p className="text-gray-600 text-sm mb-4 text-center">
-                  Fordern Sie eine Rechnung an. Ihr Zugang wird innerhalb von 12 Stunden freigeschaltet.
-                  Die Rechnung erhalten Sie per E-Mail an <strong>{email}</strong>.
-                </p>
-                {invoiceError && (
-                  <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-                    {invoiceError}
-                  </div>
-                )}
-                <button
-                  onClick={handleInvoiceRequest}
-                  disabled={invoiceSending}
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-lg font-semibold text-white bg-amber-600 rounded-xl hover:bg-amber-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {invoiceSending ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      Wird angefordert...
-                    </>
-                  ) : (
-                    <>
+
+                {!showInvoiceForm ? (
+                  <>
+                    <p className="text-gray-600 text-sm mb-4 text-center">
+                      Fordern Sie eine Rechnung an. Ihr Zugang wird innerhalb von 12 Stunden freigeschaltet.
+                      Die Rechnung erhalten Sie per E-Mail an <strong>{email}</strong>.
+                    </p>
+                    <button
+                      onClick={() => setShowInvoiceForm(true)}
+                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-lg font-semibold text-white bg-amber-600 rounded-xl hover:bg-amber-700 transition-all shadow-lg"
+                    >
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
-                      Rechnung anfordern
-                    </>
-                  )}
-                </button>
-                <p className="text-xs text-gray-500 mt-3 text-center">
-                  Zahlung per &Uuml;berweisung &ndash; Rechnung wird an {email} gesendet
-                </p>
+                      Per Rechnung zahlen
+                    </button>
+                    <p className="text-xs text-gray-500 mt-3 text-center">
+                      Zahlung per &Uuml;berweisung &ndash; Rechnung wird an {email} gesendet
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-gray-600 text-sm mb-4 text-center">
+                      Bitte vervollst&auml;ndigen Sie Ihre Rechnungsadresse, damit wir Ihnen direkt eine korrekte Rechnung erstellen k&ouml;nnen.
+                    </p>
+
+                    <div className="space-y-3 mb-4">
+                      <div className="bg-white rounded-lg p-3 border border-amber-200">
+                        <div className="text-xs text-gray-500 mb-0.5">Name</div>
+                        <div className="font-medium text-gray-900">{name}</div>
+                      </div>
+                      {company && (
+                        <div className="bg-white rounded-lg p-3 border border-amber-200">
+                          <div className="text-xs text-gray-500 mb-0.5">Firma</div>
+                          <div className="font-medium text-gray-900">{company}</div>
+                        </div>
+                      )}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Stra&szlig;e und Hausnummer *</label>
+                        <input
+                          type="text"
+                          value={street}
+                          onChange={(e) => setStreet(e.target.value)}
+                          placeholder="Musterstra&szlig;e 12"
+                          required
+                          maxLength={200}
+                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
+                        />
+                      </div>
+                      <div className="grid grid-cols-3 gap-3">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">PLZ *</label>
+                          <input
+                            type="text"
+                            value={plz}
+                            onChange={(e) => setPlz(e.target.value)}
+                            placeholder="12345"
+                            required
+                            maxLength={5}
+                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
+                          />
+                        </div>
+                        <div className="col-span-2">
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Ort *</label>
+                          <input
+                            type="text"
+                            value={city}
+                            onChange={(e) => setCity(e.target.value)}
+                            placeholder="Musterstadt"
+                            required
+                            maxLength={200}
+                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {invoiceError && (
+                      <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                        {invoiceError}
+                      </div>
+                    )}
+
+                    <button
+                      onClick={handleInvoiceRequest}
+                      disabled={invoiceSending}
+                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-lg font-semibold text-white bg-amber-600 rounded-xl hover:bg-amber-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {invoiceSending ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Wird angefordert...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                          Rechnung anfordern
+                        </>
+                      )}
+                    </button>
+                    <p className="text-xs text-gray-500 mt-3 text-center">
+                      Rechnung wird an {email} gesendet &ndash; Zahlung per &Uuml;berweisung
+                    </p>
+                  </>
+                )}
               </div>
             ) : (
               <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 mb-6 text-center">

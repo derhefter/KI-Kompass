@@ -24,7 +24,7 @@ function generateAccessCode(companyName) {
 const FRIMALO_LOGO_BASE64 = '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'
 
 // Rechnung als HTML generieren (DIN 5008, Arial, editierbar)
-function generateInvoiceHtml({ safeName, safeMail, safeCompany, planName, plan, planPrice, datum }) {
+function generateInvoiceHtml({ safeName, safeMail, safeCompany, safeStreet, safePlzCity, planName, plan, planPrice, datum }) {
   const netto = planPrice
   const ust = (parseFloat(planPrice) * 0.19).toFixed(2)
   const brutto = (parseFloat(planPrice) * 1.19).toFixed(2)
@@ -216,8 +216,8 @@ function generateInvoiceHtml({ safeName, safeMail, safeCompany, planName, plan, 
   <div class="empfaenger">
     ${safeCompany !== '&ndash;' && safeCompany !== '–' ? `${safeCompany}<br>` : ''}
     ${safeName}<br>
-    <span class="editable" contenteditable="true">[Stra&szlig;e und Hausnummer]</span><br>
-    <span class="editable" contenteditable="true">[PLZ Ort]</span>
+    ${safeStreet}<br>
+    ${safePlzCity}
   </div>
 
   <!-- Rechnungsinfos -->
@@ -322,7 +322,7 @@ export async function POST(request) {
       )
     }
 
-    const { plan, name, email, company } = await request.json()
+    const { plan, name, email, company, street, plz, city } = await request.json()
 
     if (!plan || !['premium', 'strategie'].includes(plan)) {
       return NextResponse.json({ error: 'Ungültiger Plan' }, { status: 400 })
@@ -333,14 +333,26 @@ export async function POST(request) {
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: 'Ungültige E-Mail' }, { status: 400 })
     }
-
     if (email.length > 254) {
       return NextResponse.json({ error: 'E-Mail zu lang' }, { status: 400 })
+    }
+    if (!street || typeof street !== 'string' || street.length < 3) {
+      return NextResponse.json({ error: 'Straße und Hausnummer erforderlich' }, { status: 400 })
+    }
+    if (!plz || !/^\d{4,5}$/.test(plz)) {
+      return NextResponse.json({ error: 'Gültige PLZ erforderlich' }, { status: 400 })
+    }
+    if (!city || typeof city !== 'string' || city.length < 2) {
+      return NextResponse.json({ error: 'Ort erforderlich' }, { status: 400 })
     }
 
     const safeName = escapeHtml(name.slice(0, 200).replace(/[\r\n]/g, ''))
     const safeMail = email.slice(0, 254).replace(/[<>\r\n"'&]/g, '')
     const safeCompany = escapeHtml((company || '–').slice(0, 200).replace(/[\r\n]/g, ''))
+    const safeStreet = escapeHtml(street.slice(0, 200).replace(/[\r\n]/g, ''))
+    const safePlz = escapeHtml(plz.slice(0, 5).replace(/[\r\n]/g, ''))
+    const safeCity = escapeHtml(city.slice(0, 200).replace(/[\r\n]/g, ''))
+    const safePlzCity = `${safePlz} ${safeCity}`
 
     const planName =
       plan === 'premium' ? 'Premium Report (197 €)' : 'Strategie-Paket (497 €)'
@@ -372,7 +384,7 @@ export async function POST(request) {
 
     // Rechnung als HTML generieren (editierbar, DIN 5008, Arial)
     const invoiceHtml = generateInvoiceHtml({
-      safeName, safeMail, safeCompany, planName, plan, planPrice, datum,
+      safeName, safeMail, safeCompany, safeStreet, safePlzCity, planName, plan, planPrice, datum,
     })
 
     // Vorbereitete E-Mail-Vorlage für den Kunden
@@ -409,6 +421,7 @@ Wilhelm-Schrader-Str. 27a, 06120 Halle (Saale)`
           <tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:10px;border:1px solid #ddd;">${safeName}</td></tr>
           <tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:10px;border:1px solid #ddd;">${safeCompany}</td></tr>
           <tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:10px;border:1px solid #ddd;"><a href="mailto:${safeMail}">${safeMail}</a></td></tr>
+          <tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Adresse</td><td style="padding:10px;border:1px solid #ddd;">${safeStreet}<br>${safePlzCity}</td></tr>
           <tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Datum</td><td style="padding:10px;border:1px solid #ddd;">${datum}</td></tr>
         </table>
 
@@ -416,7 +429,7 @@ Wilhelm-Schrader-Str. 27a, 06120 Halle (Saale)`
           <h3 style="margin-top:0;color:#92400e;">Rechnungsdaten</h3>
           <p>Netto: <strong>${planPrice},00 €</strong> | USt (19%): <strong>${(parseFloat(planPrice) * 0.19).toFixed(2)} €</strong> | <strong style="font-size:18px;">Brutto: ${(parseFloat(planPrice) * 1.19).toFixed(2)} €</strong></p>
           <p>Zahlungsziel: 14 Tage nach Rechnungsdatum</p>
-          <p style="margin-bottom:0;font-weight:bold;color:#dc2626;">📎 Rechnung als editierbare HTML-Datei im Anhang! Bitte Rechnungsnummer und Adresse ergänzen.</p>
+          <p style="margin-bottom:0;font-weight:bold;color:#dc2626;">📎 Rechnung als editierbare HTML-Datei im Anhang! Kundenadresse ist bereits eingetragen – bitte nur noch Rechnungsnummer ergänzen.</p>
         </div>
 
         <div style="margin:20px 0;padding:16px;background:#ecfdf5;border:2px solid #10b981;border-radius:8px;">
@@ -446,7 +459,7 @@ Wilhelm-Schrader-Str. 27a, 06120 Halle (Saale)`
 
         <h3 style="margin-top:24px;">Nächste Schritte:</h3>
         <ol>
-          <li>📎 Rechnung im Anhang öffnen → Rechnungsnummer + Adresse ergänzen → als PDF speichern (Strg+P)</li>
+          <li>📎 Rechnung im Anhang öffnen → Rechnungsnummer ergänzen → als PDF speichern (Strg+P)</li>
           <li>Rechnung an <a href="mailto:${safeMail}">${safeMail}</a> senden</li>
           <li>Vorbereitete E-Mail mit Zugangscode an den Kunden senden (Code ist bereits aktiv!)</li>
         </ol>
