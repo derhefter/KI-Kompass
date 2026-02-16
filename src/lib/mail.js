@@ -23,7 +23,8 @@ function getTransporter() {
 }
 
 // E-Mail an Steffen senden (Benachrichtigung bei neuem Lead / Kaufanfrage)
-export async function sendNotificationToOwner({ subject, html }) {
+// Unterstützt optionale Attachments: [{ filename, content, contentType }]
+export async function sendNotificationToOwner({ subject, html, attachments }) {
   const transporter = getTransporter()
   if (!transporter) {
     console.error('E-Mail nicht konfiguriert – Nachricht konnte nicht gesendet werden')
@@ -31,13 +32,17 @@ export async function sendNotificationToOwner({ subject, html }) {
   }
 
   try {
-    await transporter.sendMail({
+    const mailOptions = {
       from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
       replyTo: process.env.EMAIL_REPLY_TO || process.env.EMAIL_USER,
       subject,
       html,
-    })
+    }
+    if (attachments && attachments.length > 0) {
+      mailOptions.attachments = attachments
+    }
+    await transporter.sendMail(mailOptions)
     return true
   } catch (err) {
     console.error('Fehler beim E-Mail-Versand:', err.message)
