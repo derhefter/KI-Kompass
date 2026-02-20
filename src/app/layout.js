@@ -1,4 +1,5 @@
 import { Inter } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const inter = Inter({
@@ -42,6 +43,7 @@ export default function RootLayout({ children }) {
           </div>
         </nav>
         <main>{children}</main>
+        <Analytics />
         <footer className="bg-gray-900 text-gray-400 py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-3 gap-8">
